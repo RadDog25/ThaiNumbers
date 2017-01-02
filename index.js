@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", function () {
         //audio test
         var num = 1;
         var audio = document.getElementById("audio");
-        audio.playbackRate = 4;
+        audio.playbackRate = 3.0;
         audio.src = "sounds/$1.mp3";
         audio.play();
         audio.onended = function() {
