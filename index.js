@@ -13,16 +13,17 @@ document.addEventListener("DOMContentLoaded", function () {
         var thaienglish = data[num][1];
 
         //audio test
-        var num = 1;
+        var list = ["3", "9", "10", "5", "2", "6"] //here length = 6, cannot let list[6] happen
+        var count = 0;
         var audio = document.getElementById("audio");
         audio.playbackRate = 3.0;
-        audio.src = "sounds/$1.mp3";
+        audio.src = "sounds/$" + list[count] + ".mp3";
         audio.play();
         audio.onended = function() {
-            num++;
-            audio.src = "sounds/$" + num + ".mp3";
+            count++;
+            audio.src = "sounds/$" + list[count] + ".mp3";
             audio.play();
-            num === 10 ? audio.onended = null : null;
+            count === list.length - 1 ? audio.onended = null : null;
         };
 
 
