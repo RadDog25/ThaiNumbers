@@ -13,9 +13,8 @@ document.addEventListener("DOMContentLoaded", function () {
         var thaienglish = data[num][1];
 
         //audio test
-        var list = ["3", "9", "10", "5", "2", "6"] //here length = 6, cannot let list[6] happen
+        var list = ["3", "9", "10", "5", "2", "6", "7", "0", "2"] //here length = 6, cannot let list[6] happen
         var count = 0;
-        var audio = document.getElementById("audio");
         audio.playbackRate = 3.0;
         audio.src = "sounds/$" + list[count] + ".mp3";
         audio.play();
