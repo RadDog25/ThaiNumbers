@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-    console.log("data", data);
     document.getElementById('button').onclick = function (e) {
         function isInt(value) {
             return !isNaN(value) &&
@@ -7,30 +6,71 @@ document.addEventListener("DOMContentLoaded", function () {
                 !isNaN(parseInt(value, 10));
         }
         var num = document.getElementById('textbox').value;
-        num = isInt(num) ? num : 69;
 
-        var thaithai = data[num][0];
-        var thaienglish = data[num][1];
+        //generate thai number
+        var thaithai = "";
+        var thaienglish = "";
+        var thaisound = []
+        if (data[num]) {
+            thaithai = data[num][0];
+            thaienglish = data[num][1];
+            thaisound = [num];
+        }
+        else if (num < 10000 && isInt(num)) {
+            let copy = num;
+            let foo = Math.floor(copy / 1000);
 
-        //audio test
-        var list = ["3", "9", "10", "5", "2", "6", "7", "0", "2"] //here length = 6, cannot let list[6] happen
+            if (foo != 0) {
+                thaithai += data[foo][0] + data["phan"][0];
+                thaisound.push(foo);
+                thaisound.push("phan");
+                thaienglish += data[foo][1] + " " + data["phan"][1] + " ";
+            }
+            copy -= foo * 1000;
+
+            foo = Math.floor(copy / 100);
+            if (foo != 0) {
+                thaithai += data[foo][0] + data["roi"][0];
+                thaisound.push(foo);
+                thaisound.push("roi");
+                thaienglish += data[foo][1] + " " + data["roi"][1] + " ";
+            }
+            copy -= foo * 100;
+
+            foo = Math.floor(copy / 10) === 2 ? "yee" : Math.floor(copy / 10);
+            if (foo != 0) {
+                thaithai = foo != 1 ? thaithai + data[foo][0] + data[10][0] : thaithai + data[10][0];
+                foo != 1 ? thaisound.push(foo) : null;
+                thaisound.push(10);
+                thaienglish = foo != 1 ? thaienglish + data[foo][1] + " " + data[10][1] + " " : thaienglish + data[10][1] + " ";
+            }
+            copy = foo === "yee" ? copy - 20 : copy - foo * 10;
+
+            foo = copy === 1 ? "et" : copy;
+            if (foo != 0) {
+                thaithai += data[foo][0];
+                thaisound.push(foo);
+                thaienglish += data[foo][1];
+            }
+        }
+        else {
+            console.log("not valid");
+        }
+
+        //now play audio based on thaisound array
         var count = 0;
         audio.playbackRate = 3.0;
-        audio.src = "sounds/$" + list[count] + ".mp3";
+        audio.src = "sounds/$" + thaisound[count] + ".mp3";
         audio.play();
-        audio.onended = function() {
+        audio.onended = thaisound.length > 1 ? function() {
             count++;
-            audio.src = "sounds/$" + list[count] + ".mp3";
+            audio.src = "sounds/$" + thaisound[count] + ".mp3";
             audio.play();
-            count === list.length - 1 ? audio.onended = null : null;
-        };
-
-
-
+            count === thaisound.length - 1 ? audio.onended = null : null;
+        } : null;
+        
         document.getElementById("num").innerHTML = "Number: " + num;
-        document.getElementById("length").innerHTML = "Length: " + num.length;
         document.getElementById("thaithai").innerHTML = "Thai (Thai Writing): " + thaithai;
         document.getElementById("thaienglish").innerHTML = "Thai (English Writing): " + thaienglish;
-           
     }
 });
