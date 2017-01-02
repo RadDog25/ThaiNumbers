@@ -58,8 +58,9 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         //now play audio based on thaisound array
+        var audio = document.getElementById("audio");
         var count = 0;
-        audio.playbackRate = 3.0;
+        audio.defaultPlaybackRate = 1.8;
         audio.src = "sounds/$" + thaisound[count] + ".mp3";
         audio.play();
         audio.onended = thaisound.length > 1 ? function() {
